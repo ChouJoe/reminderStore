@@ -13,7 +13,7 @@ function defineReminderModel(sequelize) {
       autoIncrement: true
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(255),
       allowNull: false,
       references: {
         model: 'users',
