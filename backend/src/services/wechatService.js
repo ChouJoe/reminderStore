@@ -9,6 +9,10 @@ let tokenExpireTime = null;
  */
 async function getAccessToken() {
   try {
+    if (!process.env.WECHAT_APPID || !process.env.WECHAT_SECRET) {
+      throw new Error('WeChat APPID or SECRET not configured. Please set WECHAT_APPID and WECHAT_SECRET environment variables.');
+    }
+
     if (accessToken && tokenExpireTime && Date.now() < tokenExpireTime) {
       return accessToken;
     }
@@ -38,6 +42,10 @@ async function getAccessToken() {
  */
 async function getOpenid(code) {
   try {
+    if (!process.env.WECHAT_APPID || !process.env.WECHAT_SECRET) {
+      throw new Error('WeChat APPID or SECRET not configured. Please set WECHAT_APPID and WECHAT_SECRET environment variables.');
+    }
+
     const response = await axios.get('https://api.weixin.qq.com/sns/jscode2session', {
       params: {
         appid: process.env.WECHAT_APPID,
