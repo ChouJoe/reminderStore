@@ -96,11 +96,9 @@ async function initDatabase() {
   const User = defineUserModel(sequelize);
   const Reminder = defineReminderModel(sequelize);
 
-  // 定义模型关联
-  User.hasMany(Reminder, { foreignKey: 'userId', as: 'reminders' });
-  Reminder.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+  // 同步数据库模型
 
-  // 同步数据库模型 - 使用 force: true 重建表
+  // 同步模型 - 使用安全的同步策略
   await sequelize.sync({ force: true });
   console.log('Database synchronized successfully');
 
