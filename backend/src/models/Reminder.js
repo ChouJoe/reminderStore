@@ -14,11 +14,7 @@ function defineReminderModel(sequelize) {
     },
     userId: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id'
-      }
+      allowNull: false
     },
     title: {
       type: DataTypes.STRING(255),

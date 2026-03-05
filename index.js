@@ -96,19 +96,11 @@ async function initDatabase() {
   const User = defineUserModel(sequelize);
   const Reminder = defineReminderModel(sequelize);
 
-  // 同步数据库模型
-  // 先尝试移除外键约束，再同步
-  try {
-    // 对于MySQL，先执行原始SQL移除外键约束
-    if (DB_TYPE === 'mysql') {
-      await sequelize.query('ALTER TABLE reminders DROP FOREIGN KEY reminders_ibfk_1;');
-      console.log('Foreign key constraint removed');
-    }
-  } catch (error) {
-    console.warn('Failed to remove foreign key constraint (this is normal if it doesn\'t exist):', error.message);
-  }
+  // 定义模型关联
+  User.hasMany(Reminder, { foreignKey: 'userId', as: 'reminders' });
+  Reminder.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
-  // 同步模型 - 使用安全的同步策略
+  // 同步数据库模型 - 使用 force: true 重建表
   await sequelize.sync({ force: true });
   console.log('Database synchronized successfully');
 
